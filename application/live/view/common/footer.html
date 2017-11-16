@@ -1,0 +1,199 @@
+
+
+<!-- footer start-->
+<div class="footer">
+    <div class="container">
+        <div class="con_box clearfix" style="margin-right:0px;">
+            <div class="f_r code_box clearfix" style="float:left !important">
+                <div class="code weichat"><img src="__IMAGES__/tinywan_wechat.jpg">
+                    <div style="width:100px;margin: 0 auto;">先关注</div>
+                </div>
+            </div>
+            <div class="f_r code_box clearfix" style="float:left !important;">
+                <div class="code weichat" style="margin-left:4px"><img src="__IMAGES__/tinywan_wechat.jpg">
+                    <div style="width:100px;margin: 0 auto;font-size: 14px;">再登录</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden"  id="csrf" name="_csrf_token" value="6ce1430b8efb153802138fd27114df996d5706da">
+<script>
+    var csrf=$('#csrf').val();
+    $(document).ajaxSend(function(a, b, c) {
+        if (c.type == 'POST') {
+            b.setRequestHeader('X-CSRF-Token', csrf);
+        }
+    });
+</script>
+
+
+
+<!-- footer end-->
+<!--footer end-->
+</div>
+<!--content end-->
+<!--copyright-->
+
+<!--copyright start-->
+<div class="copyright">
+    <div class="container">
+        <div class="con_box clearfix">
+            <p>{$Think.config.webinfo.COPY} | <a href="http://www.miitbeian.gov.cn">{$Think.config.webinfo.RECORD}</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+
+</script>
+<!--copyright end-->
+
+<script type="text/javascript">
+    $(function () {
+
+        $(".choose").click(function(){
+            var day = $(this).attr("data");
+            $(".choose").removeClass("hov");
+            $(this).addClass("hov");
+        })
+
+        if ("web" == "web") {
+            $('.carousel-inner').quake({
+                effects: ['blind', 'linearPealReverse', 'diagonalFade', 'barsUp', 'barsDown', 'blindFade', 'explode',
+                    'explodeFancy', 'mixBars', 'mixBarsFancy', 'fade', 'blindFadeReverse', 'slideIn', 'slideInFancy',
+                    'slideLeft', 'slideRight', 'slideUp', 'slideDown', 'fallingBlindFade', 'raisingBlindFade'],
+                thumbnails: true,
+                captionOpacity: '0.3'
+            });
+            /*			    $('.one-time').slick({
+             dots: false,
+             slidesToShow: 6,
+             slidesToScroll: 1,
+             touchMove: false,
+             })*/
+            slide();
+            $('.secondtime').slick({
+                dots: false,
+                slidesToShow: 6,
+                slidesToScroll:6,
+                touchMove: false
+                /*       autoplay: true,
+                 autoplaySpeed: 5000*/
+            });
+
+            /*主页主办方动画*/
+            $('.organizerchange li').click(function(){
+                if($(this).hasClass('active')){
+                    return;
+                }
+                var index=$(this).index();
+                $(this).addClass('active').siblings().removeClass('active');
+                /*  if(index==0){
+                 $('.home_or_tj_list').eq(index).show();
+                 $('.home_or_tj_list').eq(1).hide()
+                 }else{
+                 $('.home_or_tj_list').eq(0).hide()
+                 $('.home_or_tj_list').eq(index).show()
+                 }*/
+                $('.home_or_tj_list').eq(0).animate({marginLeft:-1280*index+'px'})
+            })
+
+            /*    var  timer=setInterval("change()",5000);
+             $('.home_or_tj_list').mouseenter(function(){
+             clearInterval(timer)
+             })
+             $('.home_or_tj_list').mouseleave(function(){
+             timer=setInterval("change()",5000);
+             })*/
+
+
+        } else {
+            $(function () {
+                var $ol = $('.carousel-indicators');
+                $ol.find('li').eq(0).addClass('active');
+                var $div = $('.carousel-inner');
+                $div.find('.item').eq(0).addClass('active');
+            });
+            $(function () {
+                var count = 0;
+                $("[data-target='#carousel-example-generic_mobile']").each(function () {
+                    $(this).attr("data-slide-to", count++);
+                });
+            });
+        }
+        $("img.img_lazy").lazyload({threshold: 100, effect: "fadeIn"});
+    });
+
+    $(function(){
+        var lang = "ch";
+        $('#datetimepicker2').unbind().click(function(){
+            $('#datetimepicker2').datetimepicker("show");
+
+        });
+
+        $("#datetimepicker2").datetimepicker({
+            linkField:"startTime",
+            lang : lang,
+            autoclose: true,
+            format: "yyyy-mm-dd",
+            minView : "2"
+        }).on('changeDate', function(ev){
+
+            setTimeout(function(){
+                var startTime = $('#startTime').val();
+                startTime = startTime.substring(0,10);
+                location.href="/eventlist?datetime="+startTime;
+            })
+        })
+    })
+
+    /*主页主办方动画*/
+    var i=0;
+    function change(){
+        n= $('.home_or_tj_list').length;
+        i++;
+        if(i>n-1){
+            i=0
+        }
+        slideanimate(i);
+
+    }
+    function slideanimate(i){
+        $('.organizerchange li').eq(i).addClass('active').siblings().removeClass('active');
+        $('.home_or_tj_list').eq(0).stop().animate({marginLeft:-1280*i+'px'})
+    }
+
+    // 获取当前时间
+    function getCurrentDateTime() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds();
+        return "[" + currentdate + "] : ";
+    }
+</script>
+</body>
+</html>

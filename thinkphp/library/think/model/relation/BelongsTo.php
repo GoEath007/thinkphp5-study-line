@@ -11,6 +11,7 @@
 
 namespace think\model\relation;
 
+use think\db\Query;
 use think\Loader;
 use think\Model;
 
@@ -68,7 +69,6 @@ class BelongsTo extends OneToOne
      * @param string  $operator 比较操作符
      * @param integer $count    个数
      * @param string  $id       关联表的统计字段
-     * @param string  $joinType JOIN类型
      * @return Query
      */
     public function has($operator = '>=', $count = 1, $id = '*')
@@ -143,12 +143,13 @@ class BelongsTo extends OneToOne
                     $relationModel->isUpdate(true);
                 }
 
-                if ($relationModel && !empty($this->bindAttr)) {
+                if (!empty($this->bindAttr)) {
                     // 绑定关联属性
                     $this->bindAttr($relationModel, $result, $this->bindAttr);
+                } else {
+                    // 设置关联属性
+                    $result->setRelation($attr, $relationModel);
                 }
-                // 设置关联属性
-                $result->setRelation($attr, $relationModel);
             }
         }
     }
@@ -175,12 +176,13 @@ class BelongsTo extends OneToOne
             $relationModel->setParent(clone $result);
             $relationModel->isUpdate(true);
         }
-        if ($relationModel && !empty($this->bindAttr)) {
+        if (!empty($this->bindAttr)) {
             // 绑定关联属性
             $this->bindAttr($relationModel, $result, $this->bindAttr);
+        } else {
+            // 设置关联属性
+            $result->setRelation(Loader::parseName($relation), $relationModel);
         }
-        // 设置关联属性
-        $result->setRelation(Loader::parseName($relation), $relationModel);
     }
 
     /**

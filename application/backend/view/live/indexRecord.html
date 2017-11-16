@@ -1,0 +1,218 @@
+<style type="text/css">
+    .material-video-add {
+        text-align: center;
+        line-height: 80px;
+        border: 1px dashed #c3c5c6;
+        border-radius: 1px;
+        color: #00c1de;
+        cursor: pointer;
+        box-sizing: border-box;
+        width: 120px;
+    }
+</style>
+<div class="page-content">
+    <div class="page-header">
+        <h1>
+            视频编辑
+        </h1>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row"
+                 style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+                <div class="col-sm-4">
+                    <video controls="controls" id="live-stream" class="video-js vjs-default-skin">
+                        <source src="https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4"
+                                type="video/mp4"></source>
+                    </video>
+                </div><!-- /span -->
+
+                <div class="col-sm-8 ">
+                    <div class="row">
+                        <h5><i class="icon-facetime-video"></i> 视频素材</h5>
+                        <hr>
+                        <div class="material-video-add"><i class="icon-plus-sign"></i> 添加视频</div>
+                    </div>
+                </div><!-- /span -->
+            </div>
+        </div>
+    </div>
+    <p></p>
+    <div class="row" style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+        <div class="col-sm-12">
+            <form action="{:url('backend/live/liveVideoUploadFrom')}" class="form-horizontal" method="post">
+                <div class="form-group start">
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" id="start-time" name="end_time" placeholder="开始位置(秒)">
+                    </div>
+                    <button id="btn-start-time" onclick="getStartTime()" type="button" class="btn btn-sm btn-purple">
+                        获取当前播放位置作为开始位置
+                    </button>
+                </div>
+                <div class="form-group end">
+                    <div class="col-lg-4">
+                        <input type="text" class="form-control" id="end-time" name="old_name" placeholder="截止位置(秒)">
+                    </div>
+                    <button id="btn-end-time" onclick="getEndTime()" type="button" class="btn btn-sm  btn-purple">
+                        获取当前播放位置作为截至位置
+                    </button>
+                </div>
+                <div class="form-group end">
+                    <div class="col-lg-4">
+                        新视频名称:&nbsp;&nbsp;
+                        <input type="text" class="form-control" id="video-desc" name="video_desc" placeholder="请输入新视频名称">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-4">
+                        <button class="btn btn-sm btn-warning " type="submit"><i class="icon-refresh bigger-120"></i>&nbsp;重置
+                        </button>
+                        <button class="btn btn-sm btn-primary" type="submit"><i class="icon-save bigger-120"></i>&nbsp;保存
+                        </button>
+                        <button class="btn btn-sm btn-info" type="submit"><i class="icon-cut bigger-120"></i>&nbsp;剪切
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var $videoId = document.getElementById("live-stream");
+    var $startTimeId = document.getElementById("start-time");
+    var $endTimeId = document.getElementById("end-time");
+    /**
+     * 获取开始时间
+     */
+    function getStartTime() {
+        $startTimeId.value = Math.ceil(($videoId.currentTime) * (100)) / 100;
+    }
+
+    /**
+     * 获取结束时间
+     */
+    function getEndTime() {
+        $endTimeId.value = Math.ceil(($videoId.currentTime) * (100)) / 100;
+    }
+</script>
+<script type="text/javascript" charset="utf-8"
+        src="__COMMON__/bootstrap-3.3.7/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
+
+    var firstDayOfMonth = function () {
+        // your special logic...
+        return 0;
+    };
+    var d = new Date();
+    var currMonth = d.getMonth() - 1;
+    var currYear = d.getFullYear() - 1;
+    var startDate = new Date(currYear, currMonth, firstDayOfMonth());
+    $('.form_date').datetimepicker({
+        language: 'zh-CN',
+        format: "yyyy-mm-dd",
+        weekStart: true,
+        todayBtn: true,
+        autoclose: true,
+        todayHighlight: true,
+        startView: 2,
+        startDate: startDate,
+        forceParse: 0,
+        showMeridian: false,
+        minuteStep: 1,
+        minView: "month",
+        pickerPosition: "bottom-left"
+    });
+
+
+    //删除
+    var promptId = null;
+    function promptDelete(liveId) {
+        promptId = liveId;
+        $("#promptModal").modal("show");
+    }
+
+    function deleteChannel() {
+        $("#promptModal").modal("hide");
+        if (promptId != null) {
+            $.post("/lives/" + promptId + "/delete", function (data) {
+                if (data.errcode == 500) {
+                    alert(data.errmsg)
+                } else {
+                    $("#liveId_" + promptId).remove();
+                }
+            }).fail(function (e) {
+                alert("删除失败: " + e);
+            });
+        }
+    }
+
+    //放入婚庆首页轮播区
+    var spreadId = null;
+    function promptSpread(liveId, spread) {
+        promptId = liveId;
+        spreadId = spread;
+        $("#spread_modalLabel").text(liveId);
+        $("#spread").val(spreadId);
+        $("#spreadModal").modal("show");
+    }
+
+    function SpreadChannel() {
+        var i = $("#spread").val();
+        if (!isNaN(i) && i != "") {
+            $("#spreadModal").modal("hide");
+            $("#spread_error").text("");
+            if (promptId != null) {
+                $.post("/lives/" + promptId + "/spread", {spread: i}, function (data) {
+                    if (data.errcode == 500) {
+                        alert(data.errmsg)
+                    } else {
+                        window.location.reload();
+                    }
+                }).fail(function (e) {
+                    alert("错误: " + e);
+                });
+            }
+        } else {
+            $("#spread_error").text("必须为数字！");
+        }
+    }
+
+    $("#search_submit").click(function () {
+        if ($("#search_value").val() == "") {
+            location.href = "/lives";
+            return false;
+        }
+    })
+</script>
+<script src="__COMMON__/videojs/videojs/video.js"></script>
+<script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
+<script>
+    var options = {
+        width: 520,
+        height: 280
+    }
+    var player = videojs('live-stream', options);
+    player.addClass('vjs-matrix');
+
+    player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function (e) {
+//        console.warn('VIDEOJS player event: ', e.type);
+        if (e.type == "play") {
+            console.log('开始播放');
+        } else if (e.type == "playing") {
+            console.log('正在播放...');
+        } else if (e.type == "pause") {
+            console.log('暂停视频播放');
+        } else if (e.type == "firstplay") {
+            console.log('firstplay播放');
+        } else {
+            console.log('1111111111111');
+        }
+    });
+
+</script>

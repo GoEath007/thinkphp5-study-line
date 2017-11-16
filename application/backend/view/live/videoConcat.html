@@ -1,0 +1,308 @@
+<style type="text/css">
+    .material-video-add {
+        text-align: center;
+        line-height: 98px;
+        border: 1px dashed #c3c5c6;
+        border-radius: 1px;
+        color: #00c1de;
+        cursor: pointer;
+        box-sizing: border-box;
+        width: 140px;
+    }
+
+    #video-line-edit img {
+        -moz-box-shadow: 3px 3px 4px #000;
+        -webkit-box-shadow: 3px 3px 4px #000;
+        box-shadow: 3px 3px 4px #000;
+        background: #fff;
+        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+    }
+
+    .wrapper_player {
+        height: 100px;
+        width: 140px;
+        padding-top: 30px;
+        padding-left: 50px;
+        border: 1px solid #892E65;
+        -moz-box-shadow: 3px 3px 4px #000;
+        -webkit-box-shadow: 3px 3px 4px #000;
+        box-shadow: 3px 3px 4px #000;
+        background: #fff;
+        filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#000000');
+    }
+
+    .video_player {
+        display: block;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        background-image: url(__COMMON__/images/play3.png);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 40px 40px;
+    }
+
+    .wrapper_player:hover {
+        -webkit-filter: grayscale(70%);
+    }
+
+    .video_player:hover {
+        background-image: url(__COMMON__/images/play1.png);
+    }
+
+    .ace-thumbnails > li {
+        border: none;
+    }
+
+    .video-duration {
+        color: #f5f5f5;
+        position: absolute;
+        padding-left: 33px;
+        padding-top: 52px;
+    }
+</style>
+<div class="page-content">
+    <div class="page-header">
+        <h1>
+            视频编辑
+        </h1>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row"
+                 style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+                <div class="col-sm-4">
+                    <video id="live-stream" class="video-js vjs-default-skin" controls autoplay>
+                        <source src="https://tbm.alicdn.com/CQl8JnhZAtzu6sMYSdR/lZvpsrJgwzJs9MWaHQT%40%40sd.mp4"
+                                type="video/mp4">
+                    </video>
+                </div><!-- /span -->
+
+                <div class="col-sm-8 ">
+                    <div class="row" style="margin-left: 10px;">
+                        <h5><i class="icon-facetime-video"></i> 视频素材</h5>
+                        <hr>
+                        <ul class="ace-thumbnails" id="upload-video">
+                            <li>
+                                <div class="material-video-add"><i class="icon-plus-sign"></i> 添加视频</div>
+                            </li>
+                            {volist name="videos" id="vo"}
+                            <li data-file-name="{$vo.fileName}" data-id="{$vo.id}" data-live-id="{$vo.liveId}">
+                                <div class="wrapper_player"
+                                     style="background-image: url('{$Think.config.aliyun_oss.DOMAIN}/data/{$vo.liveId}/video/{$vo.name}.jpg?x-oss-process=image/resize,m_fixed,h_100,w_180');">
+                                    <div class="video_player">
+                                    </div>
+                                    <span class="video-duration">{$vo['duration']|gmstrftime="%H:%M:%S",###}</span>
+                                </div>
+                            </li>
+                            {/volist}
+                        </ul>
+                    </div>
+                </div><!-- /span -->
+            </div>
+        </div>
+    </div>
+    <p></p>
+    <div class="row" style="border: 1px solid #cccccc; padding-left: 5px; padding-top: 15px; padding-bottom: 15px;">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-lg-12" style="height: 200px; margin-bottom: 10px; margin-right: 10px;">
+                        <ul class="ace-thumbnails" id="concat-video-add">
+
+                        </ul>
+                    </div>
+                    <div class="col-lg-12">
+                        <span>新视频名称:</span>&nbsp;
+                        <input type="text" class="form-control" id="new-video-name" name="new_video_name"
+                               placeholder="请输入新视频名称">
+                        <p></p>
+                        <label>
+                            <input type="checkbox" class="ace btn btn-primary" id="SelectAll" onclick="swapCheck()">
+                            <span class="lbl">全选</span>
+                        </label>
+                        <button class="btn btn-primary concat-video-submit" type="submit">提交合并</button>
+                    </div>
+                </div>
+            </div><!-- /span -->
+    </div>
+</div>
+<script type="text/javascript">
+    /**
+     * 表单提交操作
+     */
+    $(document).ready(function () {
+        $(".concat-video-submit").click(function () {
+            var $videoList = [];
+            $('input[name="concat-checkbox"]:checked').each(function () {
+                $videoList.push($(this).val());
+            });
+            if ($videoList.length < 2) {
+                failShow("至少选择两个视频才能拼接");
+                return false;
+            }
+            if ($videoList == '' || $videoList == undefined || $videoList == null) {
+                failShow("视频参数获取错误");
+                return false;
+            }
+            //生成的视频ID
+            var $newVideoName = $("#new-video-name").val();
+            var $newVideoId = (new Date()).valueOf();//获取时间戳 生成视频名例如 target2342343111.mp4
+            if ($videoList && $newVideoId && $newVideoName) {
+                successShow("拼接即将开始，完成后通知你，请稍后...");
+                first_ajax_request4concat($videoList.join(','), $newVideoId,$newVideoName);
+            } else {
+                failShow("请求参数参数错误，请检查后提交。");
+                return false
+            }
+            event.preventDefault();
+        });
+
+        // 视频预览
+        $("#video-line-edit li").click(function () {
+            $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
+            $("#live-stream_html5_api").load();
+            $("#origin-video-id").val($(this).data("id"));
+
+        });
+        var $newVideoName = document.getElementById("new-video-name");
+        var $currentTimestamp = Date.parse(new Date());
+        // 素材预览
+        $("#upload-video li").click(function () {
+            $("#live-stream_html5_api").html('<source  src="{$Think.config.aliyun_oss.DOMAIN}/data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.mp4" type="video/mp4">');
+            $("#live-stream_html5_api").load();
+            $("#origin-video-id").val($(this).data("id"));
+            console.log('-------视频预览---------' + $(this).data("id"));
+            var $li = '<li id="data-' + $(this).data("id") + '">' +
+                '<img alt="50x50" src="{$Think.config.aliyun_oss.DOMAIN}data/' + $(this).data("liveId") + '/video/' + $(this).data("fileName") + '.jpg" width="220" height="160">' +
+                '<span class="lbl" data-id=' + $(this).data("id") + ' id="remove-video-li"><i class="icon-trash bigger"></i></span>&nbsp;' +
+                '<label>'+
+                '<input name="concat-checkbox" type="checkbox" class="ace" value=' + $(this).data("id") + '>' +
+                '<span class="lbl">' + $(this).data("id") + '</span>' +
+                '</label>' +
+                '</li>';
+            $("#concat-video-add").prepend($li);
+            $newVideoName.value = '视频合并视频' + $currentTimestamp;
+        });
+        // 移除元素
+        $(document).on('click',"#remove-video-li",function () {
+            var $id = $(this).data("id");
+            console.log('--------------'+$id);
+            $('#data-' + $id).remove();
+        });
+    });
+
+    //checkbox 全选/取消全选
+    var $isCheckAll = false;
+    function swapCheck() {
+        if ($isCheckAll) {
+            $("input[type='checkbox']").each(function () {
+                this.checked = false;
+            });
+            $isCheckAll = false;
+        } else {
+            $("input[type='checkbox']").each(function () {
+                this.checked = true;
+            });
+            $isCheckAll = true;
+        }
+    }
+    /**
+     * 第一次ajax请求  first_ajax_request4concat
+     * @param video_list
+     * @param new_name
+     * @param video_desc
+     */
+    function first_ajax_request4concat(video_list, new_video_id,new_video_name) {
+        var url = "{:url('backend/live/videoConcatOperateByTaskId')}";
+        var data = {
+            "video_list": video_list,
+            "new_video_id": new_video_id,
+            "new_video_name": new_video_name
+        }
+        var success = function (data) {
+            console.log("next_ajax_request == " + data);
+            if (data.status == 200) {
+                //第一次ajax请求成功  访问视频状态
+                successShow("恭喜你,视频合并成功");
+                next_ajax_request4result($newVideoId, $newVideoName);
+            } else {
+                failShow("视频合并异常，错误信息：" + data.msg);
+            }
+        };
+        $.post(url, data, success, 'json');
+    }
+
+    /**
+     * 视频合并列表
+     */
+    function next_ajax_request4result($newVideoId, $newVideoName) {
+        var url = "{:url('backend/live/videoCutResult')}";
+        var data = {
+            "new_video_id": $newVideoId,
+            "new_video_name": $newVideoName
+        };
+        var success = function (data) {
+            console.log("next_ajax_request == " + data);
+            if (data) {
+                //视频没有处理完成好
+                if (data.status == -1) {
+                    if (max_request_length < 100) {
+                        setTimeout('next_ajax_request4result($newVideoId,$newVideoName)', 5000);
+                    } else {
+                        failShow("请求超时...")
+                        return false;
+                    }
+                    max_request_length++;
+                } else if (data.status != 1) {
+                    failShow('操作失败,请重试');
+                    return false;
+                } else {
+                    //视频已经检测到
+                    successShow(data.desc + "视频合并已完成,请在编辑列表点击播放预览");
+                    var $url = "url({$Think.config.aliyun_oss.DOMAIN}data/" + data.liveId + "/video/" + data.image + "?x-oss-process=image/resize,m_fixed,h_100,w_180);";
+                    var $li = '<li data-file-name="' + data.fileName + '" data-id="' + data.id + '" data-live-id="' + data.liveId + '">' +
+                        '<div class="wrapper_player" style="background-image:' + $url + '">' +
+                        '<div class="video_player">' +
+                        '</div>' +
+                        '</div>' +
+                        '</li>';
+                    $("#video-line-edit").prepend($li);
+                    $("#video-line-edit").load();
+                }
+            } else {
+                failShow('请求错误');
+                return false;
+            }
+        };
+        $.post(url, data, success, 'json');
+    }
+</script>
+
+<script src="__COMMON__/videojs/videojs/video.js"></script>
+<script src="__COMMON__/videojs/videojs/videojs-contrib-hls.min.js"></script>
+<script>
+    var options = {
+        width: 540,
+        height: 280
+    }
+    var player = videojs('live-stream', options);
+    player.addClass('vjs-matrix');
+
+    player.on(['loadstart', 'play', 'playing', 'firstplay', 'pause', 'ended', 'adplay', 'adplaying', 'adfirstplay', 'adpause', 'adended', 'contentplay', 'contentplaying', 'contentfirstplay', 'contentpause', 'contentended', 'contentupdate'], function (e) {
+//        console.warn('VIDEOJS player event: ', e.type);
+        if (e.type == "play") {
+            console.log('开始播放');
+        } else if (e.type == "playing") {
+            console.log('正在播放...');
+        } else if (e.type == "pause") {
+            console.log('暂停视频播放');
+        } else if (e.type == "firstplay") {
+            console.log('firstplay播放');
+        } else {
+            console.log('1111111111111');
+        }
+    });
+
+</script>
+
+

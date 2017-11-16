@@ -25,4 +25,11 @@ class Admin extends Validate
         'code.require'        => '验证码不能为空',
         'code.captcha'        => '验证码不正确',
     ];
+
+    // 验证场景
+    protected $scene = [
+        'add'   =>  ['name','email'],
+        'edit'  =>  ['email'],
+    ];
+
 }

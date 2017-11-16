@@ -1,4 +1,6 @@
-config.php
 database.php
 *.xml
 *.log
+runtime/*
+vendor/*
+.idea/*

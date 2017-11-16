@@ -6,11 +6,11 @@
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
             <button class="btn btn-success">
-                <a href="http://{$Think.server.http_host}" target="_blank">首页</a>
+                <a href="http://{$Think.server.http_host}" target="_blank">主页</a>
             </button>
 
             <button class="btn btn-info">
-                <i class="icon-pencil"></i>
+                <a href="https://www.tinywan.com/live/index/index" target="_blank">直播</a>
             </button>
 
             <button class="btn btn-warning">
@@ -36,11 +36,10 @@
     <ul class="nav nav-list">
         <li class="active">
             <a href="https://www.kancloud.cn/manual/thinkphp5/118003" target="_blank">
-                <i class="icon-dashboard"></i>
+                <i class="icon-book"></i>
                 <span class="menu-text"> 在线开发手册 </span>
             </a>
         </li>
-
 
         <li>
             <a href="#" class="dropdown-toggle">
@@ -69,7 +68,7 @@
 
         <li>
             <a href="#" class="dropdown-toggle">
-                <i class="icon-group"></i>
+                <i class="icon-user-md"></i>
                 <span class="menu-text"> 权限管理 </span>
 
                 <b class="arrow icon-angle-down"></b>
@@ -77,21 +76,21 @@
 
             <ul class="submenu">
                 <li>
-                    <a href="{:url('backend/admin/adminlist')}">
+                    <a href="{:url('backend/auth.admin/adminlist')}">
                         <i class="icon-group"></i>
                         管理员管理
                     </a>
                 </li>
 
                 <li>
-                    <a href="{:url('backend/auth_group/grouplist')}">
+                    <a href="{:url('backend/auth.auth_group/grouplist')}">
                         <i class="icon-double-angle-right"></i>
                         用户组管理
                     </a>
                 </li>
 
                 <li>
-                    <a href="{:url('backend/auth_rule/rulelist')}">
+                    <a href="{:url('backend/auth.auth_rule/rulelist')}">
                         <i class="icon-double-angle-right"></i>
                         规则管理
                     </a>
@@ -99,62 +98,49 @@
             </ul>
         </li>
 
-
-        <li>
-            <a href="{:url('backend/category/index')}">
-                <i class="icon-text-width"></i>
-                <span class="menu-lock"> 栏目管理 </span>
-            </a>
-        </li>
-
         <li>
             <a href="#" class="dropdown-toggle">
-                <i class="icon-group"></i>
-                <span class="menu-text"> 标签管理 </span>
+                <i class="icon-list-ul"></i>
+                <span class="menu-text"> 基本管理 </span>
 
                 <b class="arrow icon-angle-down"></b>
             </a>
 
             <ul class="submenu">
+
                 <li>
-                    <a href="{:url('backend/tag/index')}">
-                        <i class="icon-group"></i>
-                        标签列表
+                    <a href="{:url('backend/category/index')}">
+                        <i class="icon-caret-right"></i>
+                        分类管理
                     </a>
                 </li>
 
-            </ul>
-        </li>
+                <li>
+                    <a href="{:url('backend/banner/index')}">
+                        <i class="icon-caret-right"></i>
+                        轮播图管理
+                    </a>
+                </li>
 
-        <li>
-            <a href="#" class="dropdown-toggle">
-                <i class="icon-group"></i>
-                <span class="menu-text"> 文章管理 </span>
+                <li>
+                    <a href="{:url('backend/tag/index')}">
+                        <i class="icon-tags"></i>
+                        标签管理
+                    </a>
+                </li>
 
-                <b class="arrow icon-angle-down"></b>
-            </a>
-
-            <ul class="submenu">
                 <li>
                     <a href="{:url('backend/article/index')}">
                         <i class="icon-group"></i>
                         文章列表
                     </a>
                 </li>
-
-                <li>
-                    <a href="{:url('backend/auth_group/grouplist')}">
-                        <i class="icon-double-angle-right"></i>
-                        用户组管理
-                    </a>
-                </li>
-
             </ul>
         </li>
 
         <li>
             <a href="#" class="dropdown-toggle">
-                <i class="icon-desktop"></i>
+                <i class="icon-dollar"></i>
                 <span class="menu-text"> 支付管理 </span>
 
                 <b class="arrow icon-angle-down"></b>
@@ -171,44 +157,101 @@
                 <li>
                     <a href="{:url('backend/system/dbConfig')}">
                         <i class="icon-double-angle-right"></i>
-                        数据库配置
+                        微信支付
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="dropdown-toggle">
+                <i class="icon-puzzle-piece"></i>
+                <span class="menu-text"> 监控管理 </span>
+
+                <b class="arrow icon-angle-down"></b>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a href="{:url('backend/linux_shell/internalStorage')}">
+                        <i class="icon-double-angle-right"></i>
+                        内存实时监控
                     </a>
                 </li>
 
                 <li>
-                    <a href="{:url('backend/system/emailconfig')}">
+                    <a href="jqgrid.html">
                         <i class="icon-double-angle-right"></i>
-                        邮箱配置
+                        磁盘监控
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="dropdown-toggle">
+                <i class="icon-shopping-cart"></i>
+                <span class="menu-text"> 商城模块 </span>
+
+                <b class="arrow icon-angle-down"></b>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a href="{:url('backend/product/store')}">
+                        <i class="icon-double-angle-right"></i>
+                        商品管理
                     </a>
                 </li>
 
                 <li>
-                    <a href="jquery-ui.html">
+                    <a href="{:url('backend/product/store')}">
                         <i class="icon-double-angle-right"></i>
-                        jQuery UI
+                        游戏管理
                     </a>
                 </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#" class="dropdown-toggle">
+                <i class="icon-facetime-video"></i>
+                <span class="menu-text"> 多媒体控制台</span>
+                <b class="arrow icon-angle-down"></b>
+            </a>
 
+            <ul class="submenu">
                 <li>
-                    <a href="nestable-list.html">
+                    <a href="{:url('backend/live/liveIndex')}">
                         <i class="icon-double-angle-right"></i>
-                        Nestable Lists
+                        直播控制台
                     </a>
                 </li>
 
                 <li>
                     <a href="#" class="dropdown-toggle">
                         <i class="icon-double-angle-right"></i>
-
-                        Three Level Menu
+                        点播控制台
                         <b class="arrow icon-angle-down"></b>
                     </a>
 
                     <ul class="submenu">
                         <li>
-                            <a href="#">
+                            <a href="{:url('backend/live/vodManage')}">
+                                <i class="icon-facetime-video"></i>
+                                点播管理
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{:url('backend/live/uploadVideoManage')}">
                                 <i class="icon-leaf"></i>
-                                Item #1
+                                素材管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="icon-dollar"></i>
+                                数据统计
                             </a>
                         </li>
 
@@ -216,220 +259,103 @@
                             <a href="#" class="dropdown-toggle">
                                 <i class="icon-pencil"></i>
 
-                                4th level
+                                视频编辑
                                 <b class="arrow icon-angle-down"></b>
                             </a>
 
                             <ul class="submenu">
                                 <li>
-                                    <a href="#">
-                                        <i class="icon-plus"></i>
-                                        Add Product
+                                    <a href="{:url('backend/live/videoCut')}">
+                                        <i class="icon-cut"></i>
+                                        视频剪切
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{:url('backend/live/videoConcat')}">
+                                        <i class="icon-copy"></i>
+                                        视频合并
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="#">
-                                        <i class="icon-eye-open"></i>
-                                        View Products
+                                    <a href="{:url('backend/live/videoEditList')}">
+                                        <i class="icon-list"></i>
+                                        编辑列表
                                     </a>
                                 </li>
                             </ul>
                         </li>
                     </ul>
                 </li>
+                <li>
+                    <a href="{:url('backend/live/settingsAll')}" class="dropdown-toggle">
+                        <i class="icon-double-angle-right"></i>
+                        全局设置
+                    </a>
+                </li>
+                <li>
+                    <a href="{:url('backend/live/settingsAll')}" class="dropdown-toggle">
+                        <i class="icon-double-angle-right"></i>
+                        安全管理
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-toggle">
+                        <i class="icon-double-angle-right"></i>
+                        媒体转码
+                        <b class="arrow icon-angle-down"></b>
+                    </a>
+
+                    <ul class="submenu">
+                        <li>
+                            <a href="{:url('backend/live/mediaFormatSwitch')}">
+                                <i class="icon-lock"></i>
+                                文件转码管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('backend/live/urlAuth')}">
+                                <i class="icon-lock"></i>
+                                媒体库
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:url('backend/live/playAuthentication')}">
+                                <i class="icon-play-circle"></i>
+                                全局设置
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </li>
-
         <li>
             <a href="#" class="dropdown-toggle">
-                <i class="icon-list"></i>
-                <span class="menu-text"> Tables </span>
+                <i class="icon-file-text"></i>
+                <span class="menu-text"> 办公模块 </span>
 
                 <b class="arrow icon-angle-down"></b>
             </a>
 
             <ul class="submenu">
                 <li>
-                    <a href="tables.html">
+                    <a href="{:url('backend/office/index')}">
                         <i class="icon-double-angle-right"></i>
-                        Simple &amp; Dynamic
+                        Excel管理
                     </a>
                 </li>
 
                 <li>
-                    <a href="jqgrid.html">
+                    <a href="{:url('backend/live/indexRecord')}">
                         <i class="icon-double-angle-right"></i>
-                        jqGrid plugin
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <li>
-            <a href="#" class="dropdown-toggle">
-                <i class="icon-edit"></i>
-                <span class="menu-text"> Forms </span>
-
-                <b class="arrow icon-angle-down"></b>
-            </a>
-
-            <ul class="submenu">
-                <li>
-                    <a href="form-elements.html">
-                        <i class="icon-double-angle-right"></i>
-                        Form Elements
+                        扶贫管理
                     </a>
                 </li>
 
                 <li>
-                    <a href="form-wizard.html">
+                    <a href="{:url('backend/live/indexRecord')}">
                         <i class="icon-double-angle-right"></i>
-                        Wizard &amp; Validation
-                    </a>
-                </li>
-
-                <li>
-                    <a href="wysiwyg.html">
-                        <i class="icon-double-angle-right"></i>
-                        Wysiwyg &amp; Markdown
-                    </a>
-                </li>
-
-                <li>
-                    <a href="dropzone.html">
-                        <i class="icon-double-angle-right"></i>
-                        Dropzone File Upload
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <li>
-            <a href="widgets.html">
-                <i class="icon-list-alt"></i>
-                <span class="menu-text"> Widgets </span>
-            </a>
-        </li>
-
-        <li>
-            <a href="calendar.html">
-                <i class="icon-calendar"></i>
-
-                <span class="menu-text">
-									Calendar
-									<span class="badge badge-transparent tooltip-error" title="2&nbsp;Important&nbsp;Events">
-										<i class="icon-warning-sign red bigger-130"></i>
-									</span>
-								</span>
-            </a>
-        </li>
-
-        <li>
-            <a href="gallery.html">
-                <i class="icon-picture"></i>
-                <span class="menu-text"> Gallery </span>
-            </a>
-        </li>
-
-        <li>
-            <a href="#" class="dropdown-toggle">
-                <i class="icon-tag"></i>
-                <span class="menu-text"> More Pages </span>
-
-                <b class="arrow icon-angle-down"></b>
-            </a>
-
-            <ul class="submenu">
-                <li>
-                    <a href="profile.html">
-                        <i class="icon-double-angle-right"></i>
-                        User Profile
-                    </a>
-                </li>
-
-                <li>
-                    <a href="inbox.html">
-                        <i class="icon-double-angle-right"></i>
-                        Inbox
-                    </a>
-                </li>
-
-                <li>
-                    <a href="pricing.html">
-                        <i class="icon-double-angle-right"></i>
-                        Pricing Tables
-                    </a>
-                </li>
-
-                <li>
-                    <a href="invoice.html">
-                        <i class="icon-double-angle-right"></i>
-                        Invoice
-                    </a>
-                </li>
-
-                <li>
-                    <a href="timeline.html">
-                        <i class="icon-double-angle-right"></i>
-                        Timeline
-                    </a>
-                </li>
-
-                <li>
-                    <a href="login.html">
-                        <i class="icon-double-angle-right"></i>
-                        Login &amp; Register
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <li>
-            <a href="#" class="dropdown-toggle">
-                <i class="icon-file-alt"></i>
-
-                <span class="menu-text">
-									Other Pages
-									<span class="badge badge-primary ">5</span>
-								</span>
-
-                <b class="arrow icon-angle-down"></b>
-            </a>
-
-            <ul class="submenu">
-                <li>
-                    <a href="faq.html">
-                        <i class="icon-double-angle-right"></i>
-                        FAQ
-                    </a>
-                </li>
-
-                <li>
-                    <a href="error-404.html">
-                        <i class="icon-double-angle-right"></i>
-                        Error 404
-                    </a>
-                </li>
-
-                <li>
-                    <a href="error-500.html">
-                        <i class="icon-double-angle-right"></i>
-                        Error 500
-                    </a>
-                </li>
-
-                <li>
-                    <a href="grid.html">
-                        <i class="icon-double-angle-right"></i>
-                        Grid
-                    </a>
-                </li>
-
-                <li>
-                    <a href="blank.html">
-                        <i class="icon-double-angle-right"></i>
-                        Blank Page
+                        财务管理
                     </a>
                 </li>
             </ul>

@@ -21,7 +21,7 @@ class Index extends Controller
 {
     public function index()
     {
-        return "this is api module";
+        return "This is api module";
     }
 
     public function test()
@@ -71,6 +71,25 @@ class Index extends Controller
             ->setSmsFreeSignName("弍萬")
             ->setSmsTemplateCode("SMS_50285067");
         print_r($client->execute($req));
+    }
 
+    /**
+     * 表单验证
+     */
+    public function fromValidate(Request $request)
+    {
+        // 定义表单验证规则
+        $rules = [
+            'name'  => 'require|max:25',
+            'email' => 'email',
+        ];
+        // 验证表单数据
+        $result = $this->validate($request->param(), $rules);
+        if (true !== $result) {
+            // 验证失败 输出错误信息
+            return '数据验证失败：' . $result;
+        } else {
+            return '数据验证通过！';
+        }
     }
 }
